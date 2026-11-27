@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  runtime  = "nodejs"
+  moduleFormat = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  role          String   @default("USER")
+
+  accounts      Account[]
+  transactions  Transaction[]
+
+  @@map("users")
+}
+
+model Account {
+  id            Int @id @default(autoincrement())
+  name          String
+  balance       Decimal @default(0)
+
+  userId        Int  @map("user_id")
+  user          User @relation(fields: [userId], references: [id])
+
+  transactions  Transaction[]
+
+  @@map("accounts")
+}
+
+model Category {
+  id            Int @id @default(autoincrement())
+  name          String @unique
+
+  transactions  Transaction[]
+
+  @@map("categories")
+}
+
+model Transaction {
+  id            Int @id @default(autoincrement())
+  amount        Decimal
+  description   String?
+
+  type          String
+
+  userId        Int  @map("user_id")
+  accountId     Int  @map("account_id")
+  categoryId    Int  @map("category_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user          User @relation(fields: [userId], references: [id])
+  account       Account @relation(fields: [accountId], references: [id])
+  category      Category @relation(fields: [categoryId], references: [id])
+
+  @@map("transactions")
+}
