@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "tsx src/app.js",
+    "dev": "tsx watch src/app.js",
+    "prisma:generate": "prisma generate"
   },
   "repository": {
     "type": "git",
@@ -20,8 +22,18 @@
   },
   "homepage": "https://github.com/Shadow-product/personal_finance_tracking#readme",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
     "chalk": "^4.1.2",
     "dotenv": "^18.0.10",
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.11",
+    "@types/pg": "^8.23.1",
+    "prisma": "^7.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }
