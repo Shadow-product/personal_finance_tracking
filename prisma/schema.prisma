@@ -15,8 +15,7 @@ model User {
   name          String
   email         String   @unique
   passwordHash  String   @map("password_hash")
-  role          String   @default("USER")
-
+  role          String   @default("user")
   accounts      Account[]
   transactions  Transaction[]
 
@@ -27,11 +26,9 @@ model Account {
   id            Int @id @default(autoincrement())
   name          String
   balance       Decimal @default(0)
-
   userId        Int  @map("user_id")
-  user          User @relation(fields: [userId], references: [id])
-
   transactions  Transaction[]
+  user          User @relation(fields: [userId], references: [id])
 
   @@map("accounts")
 }
@@ -39,7 +36,6 @@ model Account {
 model Category {
   id            Int @id @default(autoincrement())
   name          String @unique
-
   transactions  Transaction[]
 
   @@map("categories")
@@ -49,14 +45,11 @@ model Transaction {
   id            Int @id @default(autoincrement())
   amount        Decimal
   description   String?
-
   type          String
-
   userId        Int  @map("user_id")
   accountId     Int  @map("account_id")
   categoryId    Int  @map("category_id")
   createdAt     DateTime @default(now()) @map("created_at")
-
   user          User @relation(fields: [userId], references: [id])
   account       Account @relation(fields: [accountId], references: [id])
   category      Category @relation(fields: [categoryId], references: [id])
