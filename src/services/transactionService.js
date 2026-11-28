@@ -1,9 +1,11 @@
 // src/services/transactionServices.js
 import { prisma } from "../config/prisma.js";
 
+// READ - список транзакций
 export async function getAllTransactions() {
   return prisma.transaction.findMany({
-    include: {
+      orderBy: { id: "asc" },
+      include: {
       user: true,
       account: true,
       category: true
@@ -11,6 +13,7 @@ export async function getAllTransactions() {
   });
 }
 
+// READ - транзакция по ID
 export async function getTransactionById(id) {
   return prisma.transaction.findUnique({
     where: { id },
@@ -22,6 +25,7 @@ export async function getTransactionById(id) {
   });
 }
 
+// CREATE - добавить транзакцию
 export async function createTransaction(data) {
   return prisma.transaction.create({
     data: {
@@ -35,7 +39,8 @@ export async function createTransaction(data) {
   });
 }
 
-export async function updateTransactionById(id) {
+// PATCH /api/transactions/:id
+export async function updateTransactionById(id, data) {
   return prisma.transaction.update({
     where: { id },
     data: {
@@ -48,6 +53,7 @@ export async function updateTransactionById(id) {
   });
 }
 
+// DELETE /api/transactions/:id
 export async function deleteTransactionById(id) {
   return prisma.transaction.delete({
     where: { id }
